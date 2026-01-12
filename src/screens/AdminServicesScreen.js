@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, StyleSheet, Text } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AppButton from '../components/AppButton';
 import Card from '../components/Card';
