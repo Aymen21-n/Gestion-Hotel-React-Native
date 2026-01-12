@@ -39,3 +39,19 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# =========================
+# Project specific (Hotel App)
+# =========================
+
+# Expo / environment
+.env
+
+# Backend database (SQLite)
+server/db/*.db
+
+# Backend node modules (if server exists)
+server/node_modules/
+
+# Backend logs
+server/*.log
