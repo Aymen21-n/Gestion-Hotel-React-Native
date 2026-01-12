@@ -5,7 +5,7 @@ const listClients = async (req, res) => {
     const clients = await all('SELECT id, cin, nom, prenom, telephone, email FROM clients');
     res.json(clients);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur.' });
+    res.status(500).json({ message: `Erreur serveur: ${error.message}` });
   }
 };
 

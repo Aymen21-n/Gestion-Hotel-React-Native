@@ -23,13 +23,18 @@ const ClientRegisterScreen = ({ navigation }) => {
         return;
       }
       setLoading(true);
-      await createClient({
+      const payload = {
         cin: form.cin.trim(),
         nom: form.nom.trim(),
         prenom: form.prenom.trim(),
         telephone: form.telephone.trim(),
         email: form.email.trim().toLowerCase(),
-      });
+      };
+      if (!payload.cin || !payload.nom || !payload.prenom || !payload.email) {
+        Alert.alert('Validation', 'Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
+      await createClient(payload);
       Alert.alert('Succès', 'Compte client créé. Vous pouvez vous connecter.');
       navigation.goBack();
     } catch (error) {

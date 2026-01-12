@@ -5,7 +5,7 @@ const listEmployees = async (req, res) => {
     const employees = await all('SELECT * FROM employees');
     res.json(employees);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur.' });
+    res.status(500).json({ message: `Erreur serveur: ${error.message}` });
   }
 };
 
@@ -16,15 +16,25 @@ const createEmployee = async (req, res) => {
     return;
   }
 
+  const salaireNumber = Number(salaire);
+  if (Number.isNaN(salaireNumber)) {
+    res.status(400).json({ message: 'Salaire invalide.' });
+    return;
+  }
+
   try {
     const result = await run(
       `INSERT INTO employees (hotel_id, idEmploye, nom, prenom, poste, salaire, horaire)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [hotel_id, idEmploye, nom, prenom, poste, salaire, horaire]
+      [hotel_id, idEmploye, nom, prenom, poste, salaireNumber, horaire]
     );
     const employee = await get('SELECT * FROM employees WHERE id = ?', [result.lastID]);
     res.status(201).json(employee);
   } catch (error) {
+    if (error && error.message && error.message.includes('UNIQUE')) {
+      res.status(409).json({ message: 'ID Employé déjà utilisé.' });
+      return;
+    }
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 };

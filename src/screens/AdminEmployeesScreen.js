@@ -33,15 +33,24 @@ const AdminEmployeesScreen = ({ navigation }) => {
 
   const handleCreate = async () => {
     try {
+      if (!form.idEmploye || !form.nom || !form.prenom || !form.poste || !form.salaire || !form.horaire) {
+        Alert.alert('Validation', 'Veuillez remplir tous les champs.');
+        return;
+      }
+      const salaireValue = Number(form.salaire);
+      if (Number.isNaN(salaireValue)) {
+        Alert.alert('Validation', 'Salaire invalide.');
+        return;
+      }
       setLoading(true);
       await createEmployee({
         hotel_id: 1,
-        idEmploye: form.idEmploye,
-        nom: form.nom,
-        prenom: form.prenom,
-        poste: form.poste,
-        salaire: Number(form.salaire),
-        horaire: form.horaire,
+        idEmploye: form.idEmploye.trim(),
+        nom: form.nom.trim(),
+        prenom: form.prenom.trim(),
+        poste: form.poste.trim(),
+        salaire: salaireValue,
+        horaire: form.horaire.trim(),
       });
       setForm({ idEmploye: '', nom: '', prenom: '', poste: '', salaire: '', horaire: '' });
       await loadEmployees();
