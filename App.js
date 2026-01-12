@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ActivityIndicator, View } from 'react-native';
 import { AuthProvider, AuthContext } from './src/context/AuthContext';
 import LoginScreen from './src/screens/LoginScreen';
+import ClientRegisterScreen from './src/screens/ClientRegisterScreen';
 import AdminRoomsScreen from './src/screens/AdminRoomsScreen';
 import AdminEmployeesScreen from './src/screens/AdminEmployeesScreen';
 import AdminServicesScreen from './src/screens/AdminServicesScreen';
@@ -90,6 +91,7 @@ const RootNavigator = () => {
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ClientRegister" component={ClientRegisterScreen} options={{ title: 'Inscription' }} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

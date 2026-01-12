@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import AppButton from '../components/AppButton';
 import FormInput from '../components/FormInput';
 import Header from '../components/Header';
 import { AuthContext } from '../context/AuthContext';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const { signInAdmin, signInClient } = useContext(AuthContext);
   const [mode, setMode] = useState('admin');
   const [email, setEmail] = useState('');
@@ -65,6 +65,11 @@ const LoginScreen = () => {
         />
       ) : null}
       <AppButton title={loading ? 'Connexion...' : 'Se connecter'} onPress={handleLogin} disabled={loading} />
+      {mode === 'client' ? (
+        <Pressable onPress={() => navigation.navigate('ClientRegister')} style={styles.link}>
+          <Text style={styles.linkText}>Créer un compte client</Text>
+        </Pressable>
+      ) : null}
       <Text style={styles.helper}>Admin: admin@hotel.com / admin123</Text>
       <Text style={styles.helper}>Client: morad@gmail.com / CIN AB12345</Text>
     </View>
@@ -87,6 +92,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 12,
     color: '#7a8699',
+  },
+  link: {
+    marginTop: 8,
+    alignSelf: 'flex-start',
+  },
+  linkText: {
+    color: '#1e88e5',
+    fontWeight: '600',
   },
 });
 

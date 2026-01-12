@@ -53,6 +53,8 @@ GET    /services
 POST   /services
 PUT    /services/:id
 DELETE /services/:id
+GET    /clients
+POST   /clients
 GET    /reservations
 POST   /reservations
 POST   /reservations/:id/confirm
@@ -90,6 +92,11 @@ npm run start
 ```
 
 > ⚠️ Pour Expo sur mobile, utilisez `EXPO_PUBLIC_API_URL` (ex: `http://192.168.1.10:3001`) ou mettez à jour `src/services/api.js`.
+
+### 3) Créer un compte client (test)
+
+Dans l'écran Login, choisissez **Client** puis cliquez sur **Créer un compte client**.
+Le compte est enregistré via `POST /clients` et vous pouvez vous connecter ensuite.
 
 ## Identifiants de test
 

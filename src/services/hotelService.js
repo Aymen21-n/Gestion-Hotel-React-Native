@@ -35,3 +35,6 @@ export const generateInvoice = (payload) =>
   request('/invoices/generate', { method: 'POST', body: JSON.stringify(payload) });
 
 export const fetchStats = () => request('/stats');
+
+export const createClient = (payload) =>
+  request('/clients', { method: 'POST', body: JSON.stringify(payload) });

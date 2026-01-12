@@ -9,6 +9,7 @@ const servicesRoutes = require('./routes/servicesRoutes');
 const reservationsRoutes = require('./routes/reservationsRoutes');
 const invoicesRoutes = require('./routes/invoicesRoutes');
 const statsRoutes = require('./routes/statsRoutes');
+const clientsRoutes = require('./routes/clientsRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -27,6 +28,7 @@ app.use('/services', servicesRoutes);
 app.use('/reservations', reservationsRoutes);
 app.use('/invoices', invoicesRoutes);
 app.use('/stats', statsRoutes);
+app.use('/clients', clientsRoutes);
 
 init()
   .then(() => {
