@@ -55,3 +55,4 @@ server/node_modules/
 
 # Backend logs
 server/*.log
+server/package-lock.json
