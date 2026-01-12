@@ -37,6 +37,11 @@ const ReservationCreateScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Header title="Nouvelle réservation" subtitle={`Chambre ${room.numero}`} />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <Card>
         <Text style={styles.label}>Prix: {room.prixParNuit} MAD / nuit</Text>
         <FormInput label="Date début (YYYY-MM-DD)" value={dateDebut} onChangeText={setDateDebut} />

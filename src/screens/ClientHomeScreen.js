@@ -23,6 +23,11 @@ const ClientHomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header title="Chambres disponibles" subtitle="Choisissez votre séjour" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <AppButton title="Mes réservations" variant="secondary" onPress={() => navigation.navigate('ReservationList')} />
       <FlatList
         data={rooms}

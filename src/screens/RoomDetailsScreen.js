@@ -10,6 +10,11 @@ const RoomDetailsScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Header title={`Chambre ${room.numero}`} subtitle="Détails de la chambre" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <Card>
         <Text style={styles.label}>Catégorie: {room.categorie}</Text>
         <Text style={styles.label}>Étage: {room.etage}</Text>

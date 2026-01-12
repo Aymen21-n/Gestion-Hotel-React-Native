@@ -5,7 +5,7 @@ import Card from '../components/Card';
 import Header from '../components/Header';
 import { confirmReservation, fetchReservations, generateInvoice } from '../services/hotelService';
 
-const AdminReservationsScreen = () => {
+const AdminReservationsScreen = ({ navigation }) => {
   const [reservations, setReservations] = useState([]);
 
   const loadReservations = async () => {
@@ -34,6 +34,11 @@ const AdminReservationsScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="Réservations" subtitle="Valider les demandes" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <FlatList
         data={reservations}
         keyExtractor={(item) => item.id.toString()}

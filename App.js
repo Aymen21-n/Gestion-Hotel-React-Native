@@ -16,6 +16,8 @@ import RoomDetailsScreen from './src/screens/RoomDetailsScreen';
 import ReservationCreateScreen from './src/screens/ReservationCreateScreen';
 import ReservationListScreen from './src/screens/ReservationListScreen';
 import InvoiceScreen from './src/screens/InvoiceScreen';
+import ValidatedDataScreen from './src/screens/ValidatedDataScreen';
+import LogoutButton from './src/components/LogoutButton';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,7 +33,11 @@ const AdminTabs = () => (
 );
 
 const ClientStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerRight: () => <LogoutButton />,
+    }}
+  >
     <Stack.Screen name="ClientHome" component={ClientHomeScreen} options={{ title: 'Accueil' }} />
     <Stack.Screen name="RoomDetails" component={RoomDetailsScreen} options={{ title: 'Chambre' }} />
     <Stack.Screen
@@ -41,6 +47,7 @@ const ClientStack = () => (
     />
     <Stack.Screen name="ReservationList" component={ReservationListScreen} options={{ title: 'Réservations' }} />
     <Stack.Screen name="Invoice" component={InvoiceScreen} options={{ title: 'Facture' }} />
+    <Stack.Screen name="ValidatedData" component={ValidatedDataScreen} options={{ title: 'Validés' }} />
   </Stack.Navigator>
 );
 
@@ -58,12 +65,16 @@ const RootNavigator = () => {
   return (
     <NavigationContainer>
       {state.token ? (
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerRight: () => <LogoutButton />,
+          }}
+        >
           {state.role === 'admin' ? (
             <Stack.Screen
               name="AdminDashboard"
               component={AdminTabs}
-              options={{ title: 'Backoffice', headerRight: () => null }}
+              options={{ title: 'Backoffice' }}
             />
           ) : (
             <Stack.Screen name="Client" component={ClientStack} options={{ headerShown: false }} />
@@ -74,6 +85,7 @@ const RootNavigator = () => {
             options={{ title: 'Réservations' }}
           />
           <Stack.Screen name="Invoice" component={InvoiceScreen} options={{ title: 'Facture' }} />
+          <Stack.Screen name="ValidatedData" component={ValidatedDataScreen} options={{ title: 'Validés' }} />
           <Stack.Screen
             name="Logout"
             component={LoginScreen}

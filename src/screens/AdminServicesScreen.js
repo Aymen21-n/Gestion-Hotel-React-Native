@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import AppButton from '../components/AppButton';
 import Card from '../components/Card';
 import FormInput from '../components/FormInput';
 import Header from '../components/Header';
 import { createService, fetchServices } from '../services/hotelService';
 
-const AdminServicesScreen = () => {
+const AdminServicesScreen = ({ navigation }) => {
   const [services, setServices] = useState([]);
   const [form, setForm] = useState({
     type: 'Spa',
@@ -51,8 +52,22 @@ const AdminServicesScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="Services" subtitle="Ajouter un service" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <Card>
-        <FormInput label="Type" value={form.type} onChangeText={(value) => setForm({ ...form, type: value })} />
+        <Text style={styles.label}>Type</Text>
+        <View style={styles.pickerWrapper}>
+          <Picker selectedValue={form.type} onValueChange={(value) => setForm({ ...form, type: value })}>
+            <Picker.Item label="Spa" value="Spa" />
+            <Picker.Item label="Restauration" value="Restauration" />
+            <Picker.Item label="Piscine" value="Piscine" />
+            <Picker.Item label="SalleDeSport" value="SalleDeSport" />
+            <Picker.Item label="Club" value="Club" />
+          </Picker>
+        </View>
         <FormInput
           label="Nom"
           value={form.nomService}
@@ -94,6 +109,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#f4f6fb',
+  },
+  label: {
+    fontWeight: '600',
+    marginBottom: 6,
+    color: '#2e3a59',
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: '#d0d7e2',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    marginBottom: 12,
   },
   title: {
     fontWeight: '700',

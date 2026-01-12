@@ -6,7 +6,7 @@ import FormInput from '../components/FormInput';
 import Header from '../components/Header';
 import { createEmployee, fetchEmployees } from '../services/hotelService';
 
-const AdminEmployeesScreen = () => {
+const AdminEmployeesScreen = ({ navigation }) => {
   const [employees, setEmployees] = useState([]);
   const [form, setForm] = useState({
     idEmploye: '',
@@ -55,6 +55,11 @@ const AdminEmployeesScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="Employés" subtitle="Gestion des équipes" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <Card>
         <FormInput label="ID Employé" value={form.idEmploye} onChangeText={(value) => setForm({ ...form, idEmploye: value })} />
         <FormInput label="Nom" value={form.nom} onChangeText={(value) => setForm({ ...form, nom: value })} />

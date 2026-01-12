@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import AppButton from '../components/AppButton';
 import Card from '../components/Card';
 import FormInput from '../components/FormInput';
 import Header from '../components/Header';
 import { createRoom, fetchRooms } from '../services/hotelService';
 
-const AdminRoomsScreen = () => {
+const AdminRoomsScreen = ({ navigation }) => {
   const [rooms, setRooms] = useState([]);
-  const [form, setForm] = useState({ numero: '', categorie: '', etage: '', prixParNuit: '' });
+  const [form, setForm] = useState({ numero: '', categorie: 'Standard', etage: '', prixParNuit: '' });
   const [loading, setLoading] = useState(false);
 
   const loadRooms = async () => {
@@ -46,9 +47,24 @@ const AdminRoomsScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="Chambres" subtitle="Créer et consulter les chambres" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <Card>
         <FormInput label="Numéro" value={form.numero} onChangeText={(value) => setForm({ ...form, numero: value })} />
-        <FormInput label="Catégorie" value={form.categorie} onChangeText={(value) => setForm({ ...form, categorie: value })} />
+        <Text style={styles.label}>Catégorie</Text>
+        <View style={styles.pickerWrapper}>
+          <Picker
+            selectedValue={form.categorie}
+            onValueChange={(value) => setForm({ ...form, categorie: value })}
+          >
+            <Picker.Item label="Standard" value="Standard" />
+            <Picker.Item label="Deluxe" value="Deluxe" />
+            <Picker.Item label="Suite" value="Suite" />
+          </Picker>
+        </View>
         <FormInput
           label="Étage"
           value={form.etage}
@@ -85,6 +101,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#f4f6fb',
+  },
+  label: {
+    fontWeight: '600',
+    marginBottom: 6,
+    color: '#2e3a59',
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: '#d0d7e2',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    marginBottom: 12,
   },
   title: {
     fontWeight: '700',

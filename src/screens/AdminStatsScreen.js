@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+import AppButton from '../components/AppButton';
 import Card from '../components/Card';
 import Header from '../components/Header';
-import { fetchStats } from '../services/hotelService';
+import { fetchClients, fetchStats } from '../services/hotelService';
 
-const AdminStatsScreen = () => {
+const AdminStatsScreen = ({ navigation }) => {
   const [stats, setStats] = useState(null);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const data = await fetchStats();
-        setStats(data);
+        const [statsData, clientsData] = await Promise.all([fetchStats(), fetchClients()]);
+        setStats(statsData);
+        setClients(clientsData);
       } catch (error) {
         Alert.alert('Erreur', error.message);
       }
@@ -30,12 +33,27 @@ const AdminStatsScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="Statistiques" subtitle="Vue globale des indicateurs" />
+      <AppButton
+        title="Voir données validées"
+        variant="secondary"
+        onPress={() => navigation.navigate('ValidatedData')}
+      />
       <Card>
         <Text style={styles.value}>Chambres: {stats.nombreChambres}</Text>
         <Text style={styles.value}>Réservations: {stats.nombreReservations}</Text>
         <Text style={styles.value}>Taux d'occupation: {stats.tauxOccupation}%</Text>
         <Text style={styles.value}>Total facturé: {stats.totalFacture} MAD</Text>
       </Card>
+      <Header title="Clients" subtitle="Liste des clients enregistrés" />
+      {clients.map((client) => (
+        <Card key={`client-${client.id}`}>
+          <Text style={styles.value}>
+            {client.prenom} {client.nom}
+          </Text>
+          <Text>Email: {client.email}</Text>
+          <Text>CIN: {client.cin}</Text>
+        </Card>
+      ))}
     </View>
   );
 };
