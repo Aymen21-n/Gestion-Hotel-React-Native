@@ -18,18 +18,22 @@ const ClientRegisterScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
+      if (!form.cin || !form.nom || !form.prenom || !form.email) {
+        Alert.alert('Validation', 'Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
       setLoading(true);
       await createClient({
-        cin: form.cin,
-        nom: form.nom,
-        prenom: form.prenom,
-        telephone: form.telephone,
-        email: form.email,
+        cin: form.cin.trim(),
+        nom: form.nom.trim(),
+        prenom: form.prenom.trim(),
+        telephone: form.telephone.trim(),
+        email: form.email.trim().toLowerCase(),
       });
       Alert.alert('Succès', 'Compte client créé. Vous pouvez vous connecter.');
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Erreur', error.message);
+      Alert.alert('Erreur', error.message || 'Erreur serveur.');
     } finally {
       setLoading(false);
     }
