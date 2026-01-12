@@ -5,7 +5,16 @@ import Card from '../components/Card';
 import Header from '../components/Header';
 
 const RoomDetailsScreen = ({ route, navigation }) => {
-  const { room } = route.params;
+  const room = route.params?.room;
+
+  if (!room) {
+    return (
+      <View style={styles.container}>
+        <Header title="Chambre" subtitle="Aucune chambre sélectionnée." />
+        <AppButton title="Retour" variant="secondary" onPress={() => navigation.goBack()} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -24,7 +33,7 @@ const RoomDetailsScreen = ({ route, navigation }) => {
       <AppButton
         title="Réserver"
         onPress={() => navigation.navigate('ReservationCreate', { room })}
-        disabled={room.estReserve}
+        disabled={Boolean(room.estReserve)}
       />
     </View>
   );

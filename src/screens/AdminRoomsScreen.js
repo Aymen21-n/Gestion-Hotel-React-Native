@@ -35,7 +35,7 @@ const AdminRoomsScreen = ({ navigation }) => {
         etage: Number(form.etage),
         prixParNuit: Number(form.prixParNuit),
       });
-      setForm({ numero: '', categorie: '', etage: '', prixParNuit: '' });
+      setForm({ numero: '', categorie: 'Standard', etage: '', prixParNuit: '' });
       await loadRooms();
     } catch (error) {
       Alert.alert('Erreur', error.message);

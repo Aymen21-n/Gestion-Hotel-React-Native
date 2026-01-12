@@ -16,6 +16,7 @@ const createService = async (req, res) => {
     nomService,
     horaireOuverture,
     horaireFermeture,
+    prixService,
     nbSallesMassage,
     typeSoins,
     typeCuisine,
@@ -41,7 +42,7 @@ const createService = async (req, res) => {
     const result = await run(
       `INSERT INTO services (
         hotel_id, type, nomService, horaireOuverture, horaireFermeture,
-        nbSallesMassage, typeSoins, typeCuisine, capacite, menu,
+        prixService, nbSallesMassage, typeSoins, typeCuisine, capacite, menu,
         profondeur, estChauffee, superficie, nbAppareils, entraineurDisponible,
         horairesCours, nomDJ, styleMusical, ageMinimum
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -51,6 +52,7 @@ const createService = async (req, res) => {
         nomService,
         horaireOuverture,
         horaireFermeture,
+        prixService || 0,
         nbSallesMassage || null,
         typeSoins || null,
         typeCuisine || null,
@@ -80,6 +82,7 @@ const updateService = async (req, res) => {
     nomService,
     horaireOuverture,
     horaireFermeture,
+    prixService,
     nbSallesMassage,
     typeSoins,
     typeCuisine,
@@ -103,6 +106,7 @@ const updateService = async (req, res) => {
         nomService = ?,
         horaireOuverture = ?,
         horaireFermeture = ?,
+        prixService = ?,
         nbSallesMassage = ?,
         typeSoins = ?,
         typeCuisine = ?,
@@ -123,6 +127,7 @@ const updateService = async (req, res) => {
         nomService,
         horaireOuverture,
         horaireFermeture,
+        prixService || 0,
         nbSallesMassage || null,
         typeSoins || null,
         typeCuisine || null,

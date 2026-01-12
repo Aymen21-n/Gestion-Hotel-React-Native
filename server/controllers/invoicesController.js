@@ -13,7 +13,14 @@ const getInvoiceByReservation = async (req, res) => {
       res.status(404).json({ message: 'Facture introuvable.' });
       return;
     }
-    res.json(invoice);
+    const services = await all(
+      `SELECT services.id, services.nomService, services.type, services.prixService
+       FROM reservation_services
+       JOIN services ON services.id = reservation_services.service_id
+       WHERE reservation_services.reservation_id = ?`,
+      [req.params.reservationId]
+    );
+    res.json({ ...invoice, services });
   } catch (error) {
     res.status(500).json({ message: 'Erreur serveur.' });
   }

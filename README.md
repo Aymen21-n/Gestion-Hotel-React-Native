@@ -110,3 +110,4 @@ Le compte est enregistré via `POST /clients` et vous pouvez vous connecter ensu
 - Confirmation réservation → facture générée côté admin.
 - Bouton de déconnexion disponible pour revenir à l'écran Login.
 - Écran "Données validées" accessible depuis les pages principales (chambres/services/employés/réservations confirmées).
+- Lors d'une réservation, le client peut ajouter des services optionnels (impact sur le montant et la facture).

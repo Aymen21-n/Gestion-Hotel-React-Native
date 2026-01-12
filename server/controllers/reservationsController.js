@@ -36,7 +36,7 @@ const listReservations = async (req, res) => {
 };
 
 const createReservation = async (req, res) => {
-  const { room_id, client_id, dateDebut, dateFin, typeReservation } = req.body;
+  const { room_id, client_id, dateDebut, dateFin, typeReservation, serviceIds } = req.body;
   if (!room_id || !client_id || !dateDebut || !dateFin || !typeReservation) {
     res.status(400).json({ message: 'Champs requis manquants.' });
     return;
@@ -61,13 +61,35 @@ const createReservation = async (req, res) => {
       return;
     }
 
-    const montant = nights * room.prixParNuit;
+    const selectedServiceIds = Array.isArray(serviceIds) ? serviceIds.filter(Boolean) : [];
+    let servicesTotal = 0;
+    if (selectedServiceIds.length > 0) {
+      const placeholders = selectedServiceIds.map(() => '?').join(',');
+      const servicesSum = await get(
+        `SELECT COALESCE(SUM(prixService), 0) as total FROM services WHERE id IN (${placeholders})`,
+        selectedServiceIds
+      );
+      servicesTotal = servicesSum.total || 0;
+    }
+
+    const montant = nights * room.prixParNuit + servicesTotal;
 
     const result = await run(
       `INSERT INTO reservations (room_id, client_id, dateDebut, dateFin, typeReservation, statut, montant)
        VALUES (?, ?, ?, ?, ?, 'EN_ATTENTE', ?)`,
       [room_id, client_id, dateDebut, dateFin, typeReservation, montant]
     );
+
+    if (selectedServiceIds.length > 0) {
+      await Promise.all(
+        selectedServiceIds.map((serviceId) =>
+          run('INSERT INTO reservation_services (reservation_id, service_id) VALUES (?, ?)', [
+            result.lastID,
+            serviceId,
+          ])
+        )
+      );
+    }
 
     const reservation = await get('SELECT * FROM reservations WHERE id = ?', [result.lastID]);
     res.status(201).json(reservation);

@@ -85,6 +85,7 @@ const init = async () => {
     nomService TEXT NOT NULL,
     horaireOuverture TEXT NOT NULL,
     horaireFermeture TEXT NOT NULL,
+    prixService REAL DEFAULT 0,
     nbSallesMassage INTEGER,
     typeSoins TEXT,
     typeCuisine TEXT,
@@ -100,6 +101,20 @@ const init = async () => {
     styleMusical TEXT,
     ageMinimum INTEGER,
     FOREIGN KEY(hotel_id) REFERENCES hotels(id) ON DELETE CASCADE
+  )`);
+
+  const serviceColumns = await all('PRAGMA table_info(services)');
+  const hasPrixService = serviceColumns.some((column) => column.name === 'prixService');
+  if (!hasPrixService) {
+    await run('ALTER TABLE services ADD COLUMN prixService REAL DEFAULT 0');
+  }
+
+  await run(`CREATE TABLE IF NOT EXISTS reservation_services (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reservation_id INTEGER NOT NULL,
+    service_id INTEGER NOT NULL,
+    FOREIGN KEY(reservation_id) REFERENCES reservations(id) ON DELETE CASCADE,
+    FOREIGN KEY(service_id) REFERENCES services(id) ON DELETE CASCADE
   )`);
 
   await run(`CREATE TABLE IF NOT EXISTS clients (
@@ -174,16 +189,16 @@ const init = async () => {
   const serviceCount = await get('SELECT COUNT(*) as count FROM services');
   if (serviceCount.count === 0) {
     await run(
-      `INSERT INTO services (hotel_id, type, nomService, horaireOuverture, horaireFermeture, nbSallesMassage, typeSoins)
-       VALUES (1, 'Spa', 'Spa Zen', '09:00', '20:00', 5, 'Relaxant')`
+      `INSERT INTO services (hotel_id, type, nomService, horaireOuverture, horaireFermeture, prixService, nbSallesMassage, typeSoins)
+       VALUES (1, 'Spa', 'Spa Zen', '09:00', '20:00', 150, 5, 'Relaxant')`
     );
     await run(
-      `INSERT INTO services (hotel_id, type, nomService, horaireOuverture, horaireFermeture, typeCuisine, capacite, menu)
-       VALUES (1, 'Restauration', 'Restaurant Atlas', '12:00', '23:00', 'Marocaine', 80, 'Tagine, Couscous')`
+      `INSERT INTO services (hotel_id, type, nomService, horaireOuverture, horaireFermeture, prixService, typeCuisine, capacite, menu)
+       VALUES (1, 'Restauration', 'Restaurant Atlas', '12:00', '23:00', 90, 'Marocaine', 80, 'Tagine, Couscous')`
     );
     await run(
-      `INSERT INTO services (hotel_id, type, nomService, horaireOuverture, horaireFermeture, profondeur, estChauffee, superficie)
-       VALUES (1, 'Piscine', 'Piscine Centrale', '08:00', '22:00', 1.6, 1, 120)`
+      `INSERT INTO services (hotel_id, type, nomService, horaireOuverture, horaireFermeture, prixService, profondeur, estChauffee, superficie)
+       VALUES (1, 'Piscine', 'Piscine Centrale', '08:00', '22:00', 60, 1.6, 1, 120)`
     );
   }
 

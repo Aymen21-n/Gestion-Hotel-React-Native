@@ -14,6 +14,7 @@ const AdminServicesScreen = ({ navigation }) => {
     nomService: '',
     horaireOuverture: '',
     horaireFermeture: '',
+    prixService: '',
   });
   const [loading, setLoading] = useState(false);
 
@@ -39,8 +40,9 @@ const AdminServicesScreen = ({ navigation }) => {
         nomService: form.nomService,
         horaireOuverture: form.horaireOuverture,
         horaireFermeture: form.horaireFermeture,
+        prixService: Number(form.prixService),
       });
-      setForm({ type: 'Spa', nomService: '', horaireOuverture: '', horaireFermeture: '' });
+      setForm({ type: 'Spa', nomService: '', horaireOuverture: '', horaireFermeture: '', prixService: '' });
       await loadServices();
     } catch (error) {
       Alert.alert('Erreur', error.message);
@@ -85,6 +87,12 @@ const AdminServicesScreen = ({ navigation }) => {
           onChangeText={(value) => setForm({ ...form, horaireFermeture: value })}
           placeholder="20:00"
         />
+        <FormInput
+          label="Prix du service"
+          value={form.prixService}
+          onChangeText={(value) => setForm({ ...form, prixService: value })}
+          keyboardType="numeric"
+        />
         <AppButton title={loading ? 'Enregistrement...' : 'Ajouter'} onPress={handleCreate} disabled={loading} />
       </Card>
       <FlatList
@@ -97,6 +105,7 @@ const AdminServicesScreen = ({ navigation }) => {
             <Text>
               Horaires: {item.horaireOuverture} - {item.horaireFermeture}
             </Text>
+            <Text>Prix: {item.prixService} MAD</Text>
           </Card>
         )}
       />

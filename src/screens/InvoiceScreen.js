@@ -42,6 +42,16 @@ const InvoiceScreen = ({ route, navigation }) => {
         <Text style={styles.label}>Montant: {invoice.montantTotal} MAD</Text>
         <Text style={styles.label}>Mode de paiement: {invoice.modePaiement}</Text>
         <Text style={styles.label}>Statut: {invoice.statut}</Text>
+        {invoice.services?.length ? (
+          <>
+            <Text style={styles.label}>Services:</Text>
+            {invoice.services.map((service) => (
+              <Text key={service.id} style={styles.serviceItem}>
+                - {service.nomService} ({service.type}) : {service.prixService} MAD
+              </Text>
+            ))}
+          </>
+        ) : null}
       </Card>
     </View>
   );
@@ -56,6 +66,10 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 8,
     fontWeight: '600',
+  },
+  serviceItem: {
+    marginBottom: 4,
+    color: '#1e2a3a',
   },
 });
 

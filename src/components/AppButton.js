@@ -1,15 +1,18 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-const AppButton = ({ title, onPress, variant = 'primary', disabled }) => (
-  <Pressable
-    style={[styles.button, styles[variant], disabled && styles.disabled]}
-    onPress={onPress}
-    disabled={disabled}
-  >
-    <Text style={styles.text}>{title}</Text>
-  </Pressable>
-);
+const AppButton = ({ title, onPress, variant = 'primary', disabled }) => {
+  const isDisabled = Boolean(disabled);
+  return (
+    <Pressable
+      style={[styles.button, styles[variant], isDisabled && styles.disabled]}
+      onPress={onPress}
+      disabled={isDisabled}
+    >
+      <Text style={styles.text}>{title}</Text>
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
   button: {

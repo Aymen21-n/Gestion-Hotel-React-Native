@@ -12,9 +12,16 @@ const AdminStatsScreen = ({ navigation }) => {
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const [statsData, clientsData] = await Promise.all([fetchStats(), fetchClients()]);
-        setStats(statsData);
-        setClients(clientsData);
+        const [statsResult, clientsResult] = await Promise.allSettled([fetchStats(), fetchClients()]);
+        if (statsResult.status === 'fulfilled') {
+          setStats(statsResult.value);
+        } else {
+          Alert.alert('Erreur', statsResult.reason?.message || 'Erreur serveur.');
+        }
+
+        if (clientsResult.status === 'fulfilled') {
+          setClients(clientsResult.value);
+        }
       } catch (error) {
         Alert.alert('Erreur', error.message);
       }
