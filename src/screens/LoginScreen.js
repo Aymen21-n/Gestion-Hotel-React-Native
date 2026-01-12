@@ -66,7 +66,7 @@ const LoginScreen = () => {
       ) : null}
       <AppButton title={loading ? 'Connexion...' : 'Se connecter'} onPress={handleLogin} disabled={loading} />
       <Text style={styles.helper}>Admin: admin@hotel.com / admin123</Text>
-      <Text style={styles.helper}>Client: sara@client.com / CIN AB12345</Text>
+      <Text style={styles.helper}>Client: morad@gmail.com / CIN AB12345</Text>
     </View>
   );
 };

@@ -153,7 +153,7 @@ const init = async () => {
   if (clientCount.count === 0) {
     await run(
       'INSERT INTO clients (cin, nom, prenom, telephone, email) VALUES (?, ?, ?, ?, ?)',
-      ['AB12345', 'Benali', 'Sara', '+212611111111', 'sara@client.com']
+      ['AB12345', 'Benali', 'Morad', '+212611111111', 'morad@gmail.com']
     );
   }
 

@@ -67,7 +67,7 @@ GET    /stats
 Le serveur initialise :
 - 1 hôtel (Hotel Atlas)
 - 1 admin (admin@hotel.com / admin123)
-- 1 client (sara@client.com / CIN AB12345)
+- 1 client (morad@gmail.com / CIN AB12345)
 - Plusieurs chambres, services et employés
 
 ## Installation
@@ -89,12 +89,12 @@ npm install
 npm run start
 ```
 
-> ⚠️ Pour Expo sur mobile, remplacez `API_URL` dans `src/services/api.js` par l'IP locale de votre machine (ex: `http://192.168.1.10:3001`).
+> ⚠️ Pour Expo sur mobile, utilisez `EXPO_PUBLIC_API_URL` (ex: `http://192.168.1.10:3001`) ou mettez à jour `src/services/api.js`.
 
 ## Identifiants de test
 
 - Admin : `admin@hotel.com` / `admin123`
-- Client : `sara@client.com` / CIN `AB12345`
+- Client : `morad@gmail.com` / CIN `AB12345`
 
 ## Notes
 
