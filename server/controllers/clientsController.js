@@ -32,6 +32,10 @@ const createClient = async (req, res) => {
     ]);
     res.status(201).json(client);
   } catch (error) {
+    if (error && error.message && error.message.includes('UNIQUE')) {
+      res.status(409).json({ message: 'Email ou CIN déjà utilisé.' });
+      return;
+    }
     res.status(500).json({ message: 'Erreur serveur.' });
   }
 };

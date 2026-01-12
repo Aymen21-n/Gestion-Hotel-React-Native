@@ -47,11 +47,6 @@ const ReservationListScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header title="Mes réservations" subtitle="Suivi et factures" />
-      <AppButton
-        title="Voir données validées"
-        variant="secondary"
-        onPress={() => navigation.navigate('ValidatedData')}
-      />
       <FlatList
         data={reservations}
         keyExtractor={(item) => item.id.toString()}

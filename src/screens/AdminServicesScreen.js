@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AppButton from '../components/AppButton';
 import Card from '../components/Card';
@@ -52,64 +52,67 @@ const AdminServicesScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header title="Services" subtitle="Ajouter un service" />
-      <AppButton
-        title="Voir données validées"
-        variant="secondary"
-        onPress={() => navigation.navigate('ValidatedData')}
-      />
-      <Card>
-        <Text style={styles.label}>Type</Text>
-        <View style={styles.pickerWrapper}>
-          <Picker selectedValue={form.type} onValueChange={(value) => setForm({ ...form, type: value })}>
-            <Picker.Item label="Spa" value="Spa" />
-            <Picker.Item label="Restauration" value="Restauration" />
-            <Picker.Item label="Piscine" value="Piscine" />
-            <Picker.Item label="SalleDeSport" value="SalleDeSport" />
-            <Picker.Item label="Club" value="Club" />
-          </Picker>
-        </View>
-        <FormInput
-          label="Nom"
-          value={form.nomService}
-          onChangeText={(value) => setForm({ ...form, nomService: value })}
-        />
-        <FormInput
-          label="Ouverture"
-          value={form.horaireOuverture}
-          onChangeText={(value) => setForm({ ...form, horaireOuverture: value })}
-          placeholder="09:00"
-        />
-        <FormInput
-          label="Fermeture"
-          value={form.horaireFermeture}
-          onChangeText={(value) => setForm({ ...form, horaireFermeture: value })}
-          placeholder="20:00"
-        />
-        <FormInput
-          label="Prix du service"
-          value={form.prixService}
-          onChangeText={(value) => setForm({ ...form, prixService: value })}
-          keyboardType="numeric"
-        />
-        <AppButton title={loading ? 'Enregistrement...' : 'Ajouter'} onPress={handleCreate} disabled={loading} />
-      </Card>
-      <FlatList
-        data={services}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+    <FlatList
+      contentContainerStyle={styles.container}
+      data={services}
+      keyExtractor={(item) => item.id.toString()}
+      ListHeaderComponent={
+        <>
+          <Header title="Services" subtitle="Ajouter un service" />
+          <AppButton
+            title="Voir données validées"
+            variant="secondary"
+            onPress={() => navigation.navigate('ValidatedData')}
+          />
           <Card>
-            <Text style={styles.title}>{item.nomService}</Text>
-            <Text>Type: {item.type}</Text>
-            <Text>
-              Horaires: {item.horaireOuverture} - {item.horaireFermeture}
-            </Text>
-            <Text>Prix: {item.prixService} MAD</Text>
+            <Text style={styles.label}>Type</Text>
+            <View style={styles.pickerWrapper}>
+              <Picker selectedValue={form.type} onValueChange={(value) => setForm({ ...form, type: value })}>
+                <Picker.Item label="Spa" value="Spa" />
+                <Picker.Item label="Restauration" value="Restauration" />
+                <Picker.Item label="Piscine" value="Piscine" />
+                <Picker.Item label="SalleDeSport" value="SalleDeSport" />
+                <Picker.Item label="Club" value="Club" />
+              </Picker>
+            </View>
+            <FormInput
+              label="Nom"
+              value={form.nomService}
+              onChangeText={(value) => setForm({ ...form, nomService: value })}
+            />
+            <FormInput
+              label="Ouverture"
+              value={form.horaireOuverture}
+              onChangeText={(value) => setForm({ ...form, horaireOuverture: value })}
+              placeholder="09:00"
+            />
+            <FormInput
+              label="Fermeture"
+              value={form.horaireFermeture}
+              onChangeText={(value) => setForm({ ...form, horaireFermeture: value })}
+              placeholder="20:00"
+            />
+            <FormInput
+              label="Prix du service"
+              value={form.prixService}
+              onChangeText={(value) => setForm({ ...form, prixService: value })}
+              keyboardType="numeric"
+            />
+            <AppButton title={loading ? 'Enregistrement...' : 'Ajouter'} onPress={handleCreate} disabled={loading} />
           </Card>
-        )}
-      />
-    </View>
+        </>
+      }
+      renderItem={({ item }) => (
+        <Card>
+          <Text style={styles.title}>{item.nomService}</Text>
+          <Text>Type: {item.type}</Text>
+          <Text>
+            Horaires: {item.horaireOuverture} - {item.horaireFermeture}
+          </Text>
+          <Text>Prix: {item.prixService} MAD</Text>
+        </Card>
+      )}
+    />
   );
 };
 

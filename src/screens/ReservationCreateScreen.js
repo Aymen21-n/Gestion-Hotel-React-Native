@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import AppButton from '../components/AppButton';
 import Card from '../components/Card';
 import FormInput from '../components/FormInput';
@@ -10,8 +11,10 @@ import { createReservation, fetchServices } from '../services/hotelService';
 const ReservationCreateScreen = ({ route, navigation }) => {
   const { room } = route.params;
   const { state } = useContext(AuthContext);
-  const [dateDebut, setDateDebut] = useState('');
-  const [dateFin, setDateFin] = useState('');
+  const [dateDebut, setDateDebut] = useState(null);
+  const [dateFin, setDateFin] = useState(null);
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
   const [typeReservation, setTypeReservation] = useState('Standard');
   const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -35,14 +38,22 @@ const ReservationCreateScreen = ({ route, navigation }) => {
     );
   };
 
+  const formatDate = (date) => {
+    if (!date) return '';
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
       const reservation = await createReservation({
         room_id: room.id,
         client_id: state.profile?.id,
-        dateDebut,
-        dateFin,
+        dateDebut: formatDate(dateDebut),
+        dateFin: formatDate(dateFin),
         typeReservation,
         serviceIds: selectedServices,
       });
@@ -58,15 +69,38 @@ const ReservationCreateScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Header title="Nouvelle réservation" subtitle={`Chambre ${room.numero}`} />
-      <AppButton
-        title="Voir données validées"
-        variant="secondary"
-        onPress={() => navigation.navigate('ValidatedData')}
-      />
       <Card>
         <Text style={styles.label}>Prix: {room.prixParNuit} MAD / nuit</Text>
-        <FormInput label="Date début (YYYY-MM-DD)" value={dateDebut} onChangeText={setDateDebut} />
-        <FormInput label="Date fin (YYYY-MM-DD)" value={dateFin} onChangeText={setDateFin} />
+        <Text style={styles.label}>Date début</Text>
+        <Pressable style={styles.dateButton} onPress={() => setShowStartPicker(true)}>
+          <Text style={styles.dateText}>{dateDebut ? formatDate(dateDebut) : 'Sélectionner une date'}</Text>
+        </Pressable>
+        {showStartPicker ? (
+          <DateTimePicker
+            value={dateDebut || new Date()}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={(event, selectedDate) => {
+              setShowStartPicker(Platform.OS === 'ios');
+              if (selectedDate) setDateDebut(selectedDate);
+            }}
+          />
+        ) : null}
+        <Text style={styles.label}>Date fin</Text>
+        <Pressable style={styles.dateButton} onPress={() => setShowEndPicker(true)}>
+          <Text style={styles.dateText}>{dateFin ? formatDate(dateFin) : 'Sélectionner une date'}</Text>
+        </Pressable>
+        {showEndPicker ? (
+          <DateTimePicker
+            value={dateFin || new Date()}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={(event, selectedDate) => {
+              setShowEndPicker(Platform.OS === 'ios');
+              if (selectedDate) setDateFin(selectedDate);
+            }}
+          />
+        ) : null}
         <FormInput label="Type" value={typeReservation} onChangeText={setTypeReservation} />
         <Text style={styles.label}>Services optionnels</Text>
         {services.map((service) => {
@@ -102,6 +136,17 @@ const styles = StyleSheet.create({
   label: {
     marginBottom: 12,
     fontWeight: '600',
+  },
+  dateButton: {
+    borderWidth: 1,
+    borderColor: '#d0d7e2',
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: '#fff',
+    marginBottom: 12,
+  },
+  dateText: {
+    color: '#1e2a3a',
   },
   serviceRow: {
     borderWidth: 1,

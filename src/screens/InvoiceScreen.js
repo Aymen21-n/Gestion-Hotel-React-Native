@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import AppButton from '../components/AppButton';
 import Card from '../components/Card';
 import Header from '../components/Header';
 import { fetchInvoiceByReservation } from '../services/hotelService';
 
-const InvoiceScreen = ({ route, navigation }) => {
+const InvoiceScreen = ({ route }) => {
   const { reservationId } = route.params;
   const [invoice, setInvoice] = useState(null);
 
@@ -32,11 +31,6 @@ const InvoiceScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Header title="Facture" subtitle={`Réservation #${invoice.reservation_id}`} />
-      <AppButton
-        title="Voir données validées"
-        variant="secondary"
-        onPress={() => navigation.navigate('ValidatedData')}
-      />
       <Card>
         <Text style={styles.label}>Date: {invoice.dateFacture}</Text>
         <Text style={styles.label}>Montant: {invoice.montantTotal} MAD</Text>
